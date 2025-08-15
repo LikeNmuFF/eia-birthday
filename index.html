@@ -3,117 +3,423 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Surprise</title>
+<title>4D Birthday Surprise</title>
 <style>
-    body {
+    * {
         margin: 0;
-        font-family: 'Comic Sans MS', cursive, sans-serif;
-        background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
-        text-align: center;
-        color: #333;
+        padding: 0;
+        box-sizing: border-box;
     }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(45deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        overflow-x: hidden;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+        position: relative;
+        z-index: 10;
+    }
+
     h1 {
-        margin-top: 20px;
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: textGradient 3s ease-in-out infinite;
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        margin-bottom: 30px;
+        text-align: center;
+        transform: perspective(500px) rotateX(15deg);
     }
+
+    @keyframes textGradient {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
     #countdown {
-        font-size: 2em;
-        margin: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
+        padding: 30px 40px;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        margin-bottom: 40px;
+        transform: perspective(1000px) rotateX(10deg) rotateY(-5deg);
+        transition: all 0.3s ease;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     }
+
+    #countdown:hover {
+        transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1.05);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .cake-container {
+        position: relative;
+        margin: 40px 0;
+        display: none;
+        transform: perspective(800px) rotateX(20deg);
+    }
+
     .cake {
         position: relative;
-        margin: 50px auto;
-        width: 200px;
-        height: 150px;
-        background: #ffcc99;
-        border-radius: 0 0 20px 20px;
-        display: none;
+        width: 300px;
+        height: 200px;
+        background: linear-gradient(145deg, #ff9a9e, #fecfef);
+        border-radius: 0 0 40px 40px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), inset 0 -20px 40px rgba(255, 255, 255, 0.2);
+        animation: cakeFloat 3s ease-in-out infinite;
+        transform-style: preserve-3d;
     }
+
+    @keyframes cakeFloat {
+        0%, 100% { transform: translateY(0px) rotateY(0deg); }
+        50% { transform: translateY(-10px) rotateY(5deg); }
+    }
+
     .cake::before {
         content: '';
         position: absolute;
-        top: -50px;
+        top: -80px;
         left: 50%;
         transform: translateX(-50%);
-        width: 140px;
-        height: 50px;
-        background: #ff9966;
-        border-radius: 20px 20px 0 0;
+        width: 200px;
+        height: 80px;
+        background: linear-gradient(145deg, #ffecd2, #fcb69f);
+        border-radius: 40px 40px 0 0;
+        box-shadow: inset 0 10px 20px rgba(255, 255, 255, 0.3);
     }
+
+    .cake::after {
+        content: '';
+        position: absolute;
+        top: -140px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 60px;
+        background: linear-gradient(145deg, #ff9a9e, #fad0c4);
+        border-radius: 30px 30px 0 0;
+        box-shadow: inset 0 10px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .candles {
+        position: absolute;
+        top: -180px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 15px;
+    }
+
     .candle {
-        position: absolute;
-        top: -70px;
-        width: 10px;
-        height: 40px;
-        background: #fff;
-        left: calc(50% - 5px);
+        width: 12px;
+        height: 60px;
+        background: linear-gradient(145deg, #fff, #f0f0f0);
+        border-radius: 6px;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
+
     .flame {
-        position: absolute;
-        top: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 10px;
-        height: 15px;
-        background: radial-gradient(circle, yellow 0%, orange 60%, red 100%);
-        border-radius: 50% 50% 50% 50%;
-        animation: flicker 0.2s infinite;
-    }
-    @keyframes flicker {
-        0% { transform: translateX(-50%) scaleY(1); }
-        50% { transform: translateX(-50%) scaleY(1.2); }
-        100% { transform: translateX(-50%) scaleY(1); }
-    }
-    .smoke {
-        width: 6px;
-        height: 6px;
-        background: rgba(200, 200, 200, 0.5);
-        border-radius: 50%;
         position: absolute;
         top: -20px;
         left: 50%;
-        animation: rise 1s forwards;
+        transform: translateX(-50%);
+        width: 12px;
+        height: 20px;
+        background: radial-gradient(ellipse at center, #ffff00 0%, #ff8c00 40%, #ff4500 100%);
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        animation: flicker 0.5s ease-in-out infinite alternate;
+        filter: blur(0.5px);
     }
+
+    @keyframes flicker {
+        0% { 
+            transform: translateX(-50%) scale(1) rotate(-2deg);
+            filter: blur(0.5px) brightness(1);
+        }
+        100% { 
+            transform: translateX(-50%) scale(1.1) rotate(2deg);
+            filter: blur(0.3px) brightness(1.2);
+        }
+    }
+
+    .message-area {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+        margin: 30px 0;
+        max-width: 600px;
+        width: 90%;
+        transform: perspective(1000px) rotateX(5deg);
+        transition: all 0.3s ease;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .message-area:hover {
+        transform: perspective(1000px) rotateX(0deg) scale(1.02);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .message-area h3 {
+        color: white;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .message-input {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .message-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .message-input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.02);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .send-btn {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        border: none;
+        border-radius: 25px;
+        padding: 15px 30px;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        transform: perspective(500px) rotateX(10deg);
+    }
+
+    .send-btn:hover {
+        transform: perspective(500px) rotateX(0deg) scale(1.05);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .messages-display {
+        max-height: 200px;
+        overflow-y: auto;
+        margin-top: 20px;
+    }
+
+    .message-bubble {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 10px 15px;
+        margin: 10px 0;
+        color: white;
+        animation: messageSlideIn 0.5s ease-out;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes messageSlideIn {
+        0% {
+            transform: translateY(20px) scale(0.8);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+    }
+
+    .smoke {
+        width: 8px;
+        height: 8px;
+        background: rgba(200, 200, 200, 0.6);
+        border-radius: 50%;
+        position: absolute;
+        top: -25px;
+        left: 50%;
+        animation: rise 2s forwards;
+        filter: blur(1px);
+    }
+
     @keyframes rise {
-        0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateX(-50%) translateY(-50px) scale(2); opacity: 0; }
+        0% { 
+            transform: translateX(-50%) translateY(0) scale(1);
+            opacity: 1;
+        }
+        100% { 
+            transform: translateX(-50%) translateY(-80px) scale(3);
+            opacity: 0;
+        }
     }
+
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+        opacity: 0.7;
+    }
+
+    @keyframes float {
+        0%, 100% { 
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% { opacity: 0.7; }
+        90% { opacity: 0.7; }
+        100% { 
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
     canvas {
         position: fixed;
         top: 0;
         left: 0;
         pointer-events: none;
+        z-index: 5;
+    }
+
+    @media (max-width: 768px) {
+        h1 { font-size: 2.5rem; }
+        #countdown { font-size: 1.8rem; padding: 20px 30px; }
+        .cake { width: 250px; height: 170px; }
+        .message-area { padding: 20px; }
     }
 </style>
 </head>
 <body>
 
-<h1>🎉 Birthday Surprise 🎉</h1>
-<div id="countdown">Loading...</div>
+<div class="particles" id="particles"></div>
 
-<div class="cake" id="cake">
-    <div class="candle">
-        <div class="flame" id="flame"></div>
+<div class="container">
+    <h1>🎉 4D Birthday Surprise 🎉</h1>
+    <div id="countdown">Loading magical countdown...</div>
+
+    <div class="cake-container" id="cakeContainer">
+        <div class="cake" id="cake">
+            <div class="candles">
+                <div class="candle">
+                    <div class="flame" data-candle="1"></div>
+                </div>
+                <div class="candle">
+                    <div class="flame" data-candle="2"></div>
+                </div>
+                <div class="candle">
+                    <div class="flame" data-candle="3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="message-area">
+        <h3>✨ Birthday Wishes ✨</h3>
+        <input type="text" class="message-input" id="messageInput" placeholder="Share your birthday wish...">
+        <button class="send-btn" onclick="addMessage()">Send Wish 💫</button>
+        <div class="messages-display" id="messagesDisplay"></div>
     </div>
 </div>
 
 <canvas id="confetti"></canvas>
 
 <script>
-// ===== Countdown Logic =====
-const birthdayDate = new Date("2025-08-15T00:00:00"); // set your birthday here
+// ===== Configuration =====
+const birthdayDate = new Date("2025-08-16T00:00:00"); // Set your birthday here
 const countdownEl = document.getElementById("countdown");
-const cakeEl = document.getElementById("cake");
-const flameEl = document.getElementById("flame");
+const cakeContainer = document.getElementById("cakeContainer");
+const messagesDisplay = document.getElementById("messagesDisplay");
+const messageInput = document.getElementById("messageInput");
 
+// ===== Floating Particles Background =====
+function createParticles() {
+    const particlesContainer = document.getElementById("particles");
+    
+    function addParticle() {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        
+        const size = Math.random() * 8 + 4;
+        const left = Math.random() * window.innerWidth;
+        const hue = Math.random() * 360;
+        const delay = Math.random() * 6;
+        
+        particle.style.width = size + "px";
+        particle.style.height = size + "px";
+        particle.style.left = left + "px";
+        particle.style.background = `hsl(${hue}, 70%, 60%)`;
+        particle.style.animationDelay = delay + "s";
+        
+        particlesContainer.appendChild(particle);
+        
+        setTimeout(() => {
+            particle.remove();
+        }, 6000 + delay * 1000);
+    }
+    
+    setInterval(addParticle, 200);
+}
+
+// ===== Countdown Logic =====
 function updateCountdown() {
     const now = new Date();
     const diff = birthdayDate - now;
 
     if (diff <= 0) {
-        countdownEl.textContent = "🎂 Happy Birthday! 🎂";
-        cakeEl.style.display = "block";
+        countdownEl.innerHTML = "🎂 Happy Birthday! 🎂";
+        cakeContainer.style.display = "block";
         startMicDetection();
         startConfetti();
+        startCelebration();
         clearInterval(timer);
         return;
     }
@@ -123,74 +429,229 @@ function updateCountdown() {
     const minutes = Math.floor((diff / (1000 * 60)) % 60);
     const seconds = Math.floor((diff / 1000) % 60);
 
-    countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    countdownEl.innerHTML = `
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+            <span>${days}<small style="display:block;font-size:0.5em;">DAYS</small></span>
+            <span>${hours}<small style="display:block;font-size:0.5em;">HOURS</small></span>
+            <span>${minutes}<small style="display:block;font-size:0.5em;">MINS</small></span>
+            <span>${seconds}<small style="display:block;font-size:0.5em;">SECS</small></span>
+        </div>
+    `;
 }
 
-let timer = setInterval(updateCountdown, 1000);
-updateCountdown();
+// ===== Message System =====
+let messages = [];
+
+function addMessage() {
+    const message = messageInput.value.trim();
+    if (!message) return;
+    
+    messages.push({
+        text: message,
+        timestamp: new Date()
+    });
+    
+    displayMessages();
+    messageInput.value = "";
+    
+    // Add sparkle effect
+    createSparkles(messageInput);
+}
+
+function displayMessages() {
+    messagesDisplay.innerHTML = messages.map(msg => `
+        <div class="message-bubble">
+            ${msg.text}
+            <small style="opacity: 0.7; float: right;">
+                ${msg.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+            </small>
+        </div>
+    `).join('');
+    
+    messagesDisplay.scrollTop = messagesDisplay.scrollHeight;
+}
+
+function createSparkles(element) {
+    for (let i = 0; i < 6; i++) {
+        const sparkle = document.createElement("div");
+        sparkle.innerHTML = "✨";
+        sparkle.style.position = "absolute";
+        sparkle.style.fontSize = "1rem";
+        sparkle.style.pointerEvents = "none";
+        sparkle.style.animation = "sparkleFloat 1s ease-out forwards";
+        
+        const rect = element.getBoundingClientRect();
+        sparkle.style.left = (rect.left + Math.random() * rect.width) + "px";
+        sparkle.style.top = rect.top + "px";
+        sparkle.style.zIndex = "1000";
+        
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1000);
+    }
+}
+
+// Add sparkle animation
+const style = document.createElement("style");
+style.textContent = `
+    @keyframes sparkleFloat {
+        0% {
+            transform: translateY(0) scale(0);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-50px) scale(1) rotate(180deg);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
 
 // ===== Microphone Blowing Detection =====
 function startMicDetection() {
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        const audioCtx = new AudioContext();
-        const analyser = audioCtx.createAnalyser();
-        const mic = audioCtx.createMediaStreamSource(stream);
-        mic.connect(analyser);
-
-        const dataArray = new Uint8Array(analyser.fftSize);
-
-        function detectBlow() {
-            analyser.getByteTimeDomainData(dataArray);
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-                let sample = (dataArray[i] - 128) / 128;
-                sum += sample * sample;
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            const audioCtx = new AudioContext();
+            const analyser = audioCtx.createAnalyser();
+            const mic = audioCtx.createMediaStreamSource(stream);
+            mic.connect(analyser);
+            
+            analyser.fftSize = 256;
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            
+            function detectBlow() {
+                analyser.getByteFrequencyData(dataArray);
+                
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sum += dataArray[i];
+                }
+                let average = sum / dataArray.length;
+                
+                if (average > 50) { // Adjust sensitivity
+                    blowOutCandles();
+                } else {
+                    requestAnimationFrame(detectBlow);
+                }
             }
-            let volume = Math.sqrt(sum / dataArray.length);
-            if (volume > 0.2) { // adjust sensitivity
-                blowOutCandles();
-            } else {
-                requestAnimationFrame(detectBlow);
-            }
-        }
-        detectBlow();
+            detectBlow();
+        })
+        .catch(err => {
+            console.log("Microphone access denied or not available");
+            // Add click to blow out candles as fallback
+            document.querySelectorAll('.flame').forEach(flame => {
+                flame.style.cursor = "pointer";
+                flame.onclick = () => blowOutCandle(flame);
+            });
+        });
+}
+
+function blowOutCandle(flame) {
+    flame.style.animation = "none";
+    flame.style.opacity = "0";
+    
+    const smoke = document.createElement("div");
+    smoke.className = "smoke";
+    flame.parentElement.appendChild(smoke);
+    setTimeout(() => smoke.remove(), 2000);
+}
+
+function blowOutCandles() {
+    document.querySelectorAll('.flame').forEach((flame, index) => {
+        setTimeout(() => blowOutCandle(flame), index * 200);
     });
 }
 
-// ===== Blow Out Candles =====
-function blowOutCandles() {
-    flameEl.remove();
-    const smoke = document.createElement("div");
-    smoke.className = "smoke";
-    document.querySelector(".candle").appendChild(smoke);
-    setTimeout(() => smoke.remove(), 1000);
-}
-
-// ===== Confetti Animation =====
+// ===== Enhanced Confetti Animation =====
 function startConfetti() {
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    const pieces = Array.from({ length: 150 }, () => ({
+    
+    const pieces = Array.from({ length: 200 }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height - canvas.height,
-        size: 5 + Math.random() * 5,
-        color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-        speed: 2 + Math.random() * 3
+        size: 3 + Math.random() * 8,
+        color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+        speed: 1 + Math.random() * 4,
+        rotation: Math.random() * 360,
+        rotationSpeed: -5 + Math.random() * 10,
+        shape: Math.random() > 0.5 ? 'rect' : 'circle'
     }));
+    
     function update() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
         pieces.forEach(p => {
             p.y += p.speed;
-            if (p.y > canvas.height) p.y = -10;
+            p.rotation += p.rotationSpeed;
+            
+            if (p.y > canvas.height + p.size) {
+                p.y = -p.size;
+                p.x = Math.random() * canvas.width;
+            }
+            
+            ctx.save();
+            ctx.translate(p.x + p.size/2, p.y + p.size/2);
+            ctx.rotate(p.rotation * Math.PI / 180);
             ctx.fillStyle = p.color;
-            ctx.fillRect(p.x, p.y, p.size, p.size);
+            
+            if (p.shape === 'circle') {
+                ctx.beginPath();
+                ctx.arc(0, 0, p.size/2, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+            }
+            
+            ctx.restore();
         });
+        
         requestAnimationFrame(update);
     }
     update();
 }
+
+function startCelebration() {
+    // Add celebration messages
+    const celebrationMessages = [
+        "🎉 It's your special day! 🎉",
+        "✨ Make a wish! ✨",
+        "🎂 Blow out the candles! 🎂",
+        "💫 Another year of amazing! 💫"
+    ];
+    
+    celebrationMessages.forEach((msg, index) => {
+        setTimeout(() => {
+            messages.push({
+                text: msg,
+                timestamp: new Date()
+            });
+            displayMessages();
+        }, index * 2000);
+    });
+}
+
+// ===== Event Listeners =====
+messageInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        addMessage();
+    }
+});
+
+// ===== Initialize =====
+let timer = setInterval(updateCountdown, 1000);
+updateCountdown();
+createParticles();
+
+// Handle window resize for canvas
+window.addEventListener('resize', () => {
+    const canvas = document.getElementById("confetti");
+    if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+});
 </script>
 
 </body>
