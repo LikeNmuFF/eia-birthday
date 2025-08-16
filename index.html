@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>4D Birthday Surprise</title>
+<title>HAPPY BIRTHDAYYYY🥹🫶</title>
 <style>
     * {
         margin: 0;
@@ -27,7 +27,8 @@
         100% { background-position: 0% 50%; }
     }
 
-    .container {
+    /* Main Page Styles */
+    .main-page {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -36,8 +37,196 @@
         padding: 20px;
         position: relative;
         z-index: 10;
+        transition: opacity 0.8s ease;
     }
 
+    .main-page.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* Messages Page Styles */
+    .messages-page {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 20s ease infinite;
+        display: none;
+        padding: 20px;
+        overflow-y: auto;
+        z-index: 100;
+    }
+
+    .messages-page.active {
+        display: block;
+    }
+
+    .messages-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-top: 40px;
+    }
+
+    .messages-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, #ffd700, #ffff00, #ffa500);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: textGlow 2s ease-in-out infinite alternate;
+        text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+        margin-bottom: 10px;
+    }
+
+    .messages-header p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.2rem;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes textGlow {
+        0% { text-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+        100% { text-shadow: 0 0 50px rgba(255, 215, 0, 0.9), 0 0 70px rgba(255, 215, 0, 0.5); }
+    }
+
+    .notes-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .note {
+        background: linear-gradient(135deg, #fff9c4 0%, #fff5b7 100%);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        transform: rotate(-2deg) scale(0);
+        opacity: 0;
+        position: relative;
+        min-height: 180px;
+        border: 3px solid #f4e04d;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .note:nth-child(even) {
+        transform: rotate(2deg) scale(0);
+        background: linear-gradient(135deg, #e8f5e8 0%, #d4f1d4 100%);
+        border-color: #90c695;
+    }
+
+    .note:nth-child(3n) {
+        background: linear-gradient(135deg, #ffe4e1 0%, #ffd6d1 100%);
+        border-color: #ff9999;
+    }
+
+    .note.show {
+        opacity: 1;
+        transform: rotate(-2deg) scale(1);
+        animation: noteAppear 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .note:nth-child(even).show {
+        transform: rotate(2deg) scale(1);
+    }
+
+    .note:hover {
+        transform: rotate(0deg) scale(1.05);
+        z-index: 10;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes noteAppear {
+        0% {
+            transform: rotate(-10deg) scale(0) translateY(50px);
+            opacity: 0;
+        }
+        60% {
+            transform: rotate(-4deg) scale(1.1) translateY(-10px);
+            opacity: 0.8;
+        }
+        100% {
+            transform: rotate(-2deg) scale(1) translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .note-content {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #444;
+        margin-bottom: 15px;
+        font-weight: 500;
+        word-wrap: break-word;
+    }
+
+    .note-time {
+        position: absolute;
+        bottom: 10px;
+        right: 15px;
+        font-size: 0.9rem;
+        color: #666;
+        opacity: 0.7;
+        font-style: italic;
+    }
+
+    .note::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 20px;
+        height: 20px;
+        background: radial-gradient(circle, #ff6b6b 30%, transparent 31%);
+        border-radius: 50%;
+        opacity: 0.3;
+    }
+
+    .note::after {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: 20px;
+        width: 30px;
+        height: 15px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        transform: rotate(-5deg);
+    }
+
+    .back-button {
+        position: fixed;
+        top: 30px;
+        left: 30px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50px;
+        padding: 12px 25px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        z-index: 101;
+    }
+
+    .back-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Original styles for main page */
     h1 {
         font-size: 3.5rem;
         font-weight: 800;
@@ -157,6 +346,7 @@
         border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
         animation: flicker 0.5s ease-in-out infinite alternate;
         filter: blur(0.5px);
+        cursor: pointer;
     }
 
     @keyframes flicker {
@@ -234,9 +424,30 @@
         transition: all 0.3s ease;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         transform: perspective(500px) rotateX(10deg);
+        margin-right: 10px;
     }
 
     .send-btn:hover {
+        transform: perspective(500px) rotateX(0deg) scale(1.05);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .view-messages-btn {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border: none;
+        border-radius: 25px;
+        padding: 15px 30px;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        transform: perspective(500px) rotateX(10deg);
+        display: none;
+    }
+
+    .view-messages-btn:hover {
         transform: perspective(500px) rotateX(0deg) scale(1.05);
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
@@ -330,11 +541,62 @@
         z-index: 5;
     }
 
+    /* Responsive Design */
     @media (max-width: 768px) {
         h1 { font-size: 2.5rem; }
         #countdown { font-size: 1.8rem; padding: 20px 30px; }
         .cake { width: 250px; height: 170px; }
         .message-area { padding: 20px; }
+        .send-btn, .view-messages-btn { 
+            display: block; 
+            margin: 10px 0; 
+            width: 100%;
+        }
+        
+        .messages-header h1 { font-size: 2rem; }
+        .messages-header p { font-size: 1rem; }
+        
+        .notes-container {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 10px;
+        }
+        
+        .note {
+            min-height: 160px;
+            padding: 20px;
+        }
+        
+        .back-button {
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .main-page { padding: 10px; }
+        h1 { font-size: 2rem; }
+        #countdown { font-size: 1.4rem; padding: 15px 20px; }
+        .message-area { padding: 15px; }
+        .cake { width: 200px; height: 140px; }
+        
+        .messages-header { padding-top: 80px; }
+        .messages-page { padding: 10px; }
+        .note { padding: 15px; font-size: 1rem; }
+    }
+
+    /* Sparkle Animation */
+    @keyframes sparkleFloat {
+        0% {
+            transform: translateY(0) scale(0);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-50px) scale(1) rotate(180deg);
+            opacity: 0;
+        }
     }
 </style>
 </head>
@@ -342,8 +604,9 @@
 
 <div class="particles" id="particles"></div>
 
-<div class="container">
-    <h1>🎉 4D Birthday Surprise 🎉</h1>
+<!-- Main Page -->
+<div class="main-page" id="mainPage">
+    <h1>🎉 HAPPY BIRTHDAYYYY 🎉</h1>
     <div id="countdown">Loading magical countdown...</div>
 
     <div class="cake-container" id="cakeContainer">
@@ -365,8 +628,25 @@
     <div class="message-area">
         <h3>✨ Birthday Wishes ✨</h3>
         <input type="text" class="message-input" id="messageInput" placeholder="Share your birthday wish...">
-        <button class="send-btn" onclick="addMessage()">Send Wish 💫</button>
+        <div style="text-align: center;">
+            <button class="send-btn" onclick="addMessage()">Send Wish 💫</button>
+            <button class="view-messages-btn" id="viewMessagesBtn" onclick="showMessagesPage()">View All Wishes ✨</button>
+        </div>
         <div class="messages-display" id="messagesDisplay"></div>
+    </div>
+</div>
+
+<!-- Messages Page -->
+<div class="messages-page" id="messagesPage">
+    <button class="back-button" onclick="showMainPage()">← Back to Birthday</button>
+    
+    <div class="messages-header">
+        <h1>✨ Birthday Wishes ✨</h1>
+        <p>All the magical messages for the special day</p>
+    </div>
+    
+    <div class="notes-container" id="notesContainer">
+        <!-- Notes will be dynamically generated here -->
     </div>
 </div>
 
@@ -374,11 +654,19 @@
 
 <script>
 // ===== Configuration =====
-const birthdayDate = new Date("2025-08-16T00:00:00"); // Set your birthday here
+const birthdayDate = new Date("2026-06-26T00:00:00"); // Set your birthday here
 const countdownEl = document.getElementById("countdown");
 const cakeContainer = document.getElementById("cakeContainer");
 const messagesDisplay = document.getElementById("messagesDisplay");
 const messageInput = document.getElementById("messageInput");
+const viewMessagesBtn = document.getElementById("viewMessagesBtn");
+const mainPage = document.getElementById("mainPage");
+const messagesPage = document.getElementById("messagesPage");
+const notesContainer = document.getElementById("notesContainer");
+
+let messages = [];
+let candlesBlownOut = false;
+let allCandlesOut = false;
 
 // ===== Floating Particles Background =====
 function createParticles() {
@@ -440,8 +728,6 @@ function updateCountdown() {
 }
 
 // ===== Message System =====
-let messages = [];
-
 function addMessage() {
     const message = messageInput.value.trim();
     if (!message) return;
@@ -456,6 +742,11 @@ function addMessage() {
     
     // Add sparkle effect
     createSparkles(messageInput);
+    
+    // Show view messages button if candles are blown out
+    if (allCandlesOut) {
+        viewMessagesBtn.style.display = "inline-block";
+    }
 }
 
 function displayMessages() {
@@ -479,35 +770,65 @@ function createSparkles(element) {
         sparkle.style.fontSize = "1rem";
         sparkle.style.pointerEvents = "none";
         sparkle.style.animation = "sparkleFloat 1s ease-out forwards";
+        sparkle.style.zIndex = "1000";
         
         const rect = element.getBoundingClientRect();
         sparkle.style.left = (rect.left + Math.random() * rect.width) + "px";
         sparkle.style.top = rect.top + "px";
-        sparkle.style.zIndex = "1000";
         
         document.body.appendChild(sparkle);
         setTimeout(() => sparkle.remove(), 1000);
     }
 }
 
-// Add sparkle animation
-const style = document.createElement("style");
-style.textContent = `
-    @keyframes sparkleFloat {
-        0% {
-            transform: translateY(0) scale(0);
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(-50px) scale(1) rotate(180deg);
-            opacity: 0;
-        }
+// ===== Page Navigation =====
+function showMessagesPage() {
+    if (messages.length === 0) {
+        alert("No messages yet! Add some birthday wishes first! 🎉");
+        return;
     }
-`;
-document.head.appendChild(style);
+    
+    mainPage.classList.add("hidden");
+    messagesPage.classList.add("active");
+    createNotesFromMessages();
+    startMessagesConfetti();
+}
+
+function showMainPage() {
+    messagesPage.classList.remove("active");
+    mainPage.classList.remove("hidden");
+}
+
+function createNotesFromMessages() {
+    notesContainer.innerHTML = '';
+    
+    messages.forEach((msg, index) => {
+        const note = document.createElement("div");
+        note.className = "note";
+        
+        note.innerHTML = `
+            <div class="note-content">${msg.text}</div>
+            <div class="note-time">${msg.timestamp.toLocaleString()}</div>
+        `;
+        
+        notesContainer.appendChild(note);
+        
+        // Animate in with staggered timing
+        setTimeout(() => {
+            note.classList.add("show");
+        }, index * 300 + 500);
+    });
+}
 
 // ===== Microphone Blowing Detection =====
 function startMicDetection() {
+    // Add click handlers for mobile/fallback
+    document.querySelectorAll('.flame').forEach(flame => {
+        flame.style.cursor = "pointer";
+        flame.onclick = () => blowOutCandle(flame);
+    });
+    
+    // Try microphone detection
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
             const audioCtx = new AudioContext();
@@ -527,25 +848,22 @@ function startMicDetection() {
                 }
                 let average = sum / dataArray.length;
                 
-                if (average > 50) { // Adjust sensitivity
+                if (average > 50 && !candlesBlownOut) { // Adjust sensitivity
                     blowOutCandles();
-                } else {
+                } else if (!allCandlesOut) {
                     requestAnimationFrame(detectBlow);
                 }
             }
             detectBlow();
         })
         .catch(err => {
-            console.log("Microphone access denied or not available");
-            // Add click to blow out candles as fallback
-            document.querySelectorAll('.flame').forEach(flame => {
-                flame.style.cursor = "pointer";
-                flame.onclick = () => blowOutCandle(flame);
-            });
+            console.log("Microphone access denied or not available - using click method");
         });
 }
 
 function blowOutCandle(flame) {
+    if (flame.style.opacity === "0") return; // Already blown out
+    
     flame.style.animation = "none";
     flame.style.opacity = "0";
     
@@ -553,12 +871,34 @@ function blowOutCandle(flame) {
     smoke.className = "smoke";
     flame.parentElement.appendChild(smoke);
     setTimeout(() => smoke.remove(), 2000);
+    
+    // Check if all candles are blown out
+    checkAllCandlesOut();
 }
 
 function blowOutCandles() {
+    candlesBlownOut = true;
     document.querySelectorAll('.flame').forEach((flame, index) => {
         setTimeout(() => blowOutCandle(flame), index * 200);
     });
+}
+
+function checkAllCandlesOut() {
+    const flames = document.querySelectorAll('.flame');
+    const blownOut = Array.from(flames).filter(flame => flame.style.opacity === "0");
+    
+    if (blownOut.length === flames.length && !allCandlesOut) {
+        allCandlesOut = true;
+        setTimeout(() => {
+            if (messages.length > 0) {
+                viewMessagesBtn.style.display = "inline-block";
+                // Auto-show messages page after 3 seconds
+                setTimeout(() => {
+                    showMessagesPage();
+                }, 3000);
+            }
+        }, 1000);
+    }
 }
 
 // ===== Enhanced Confetti Animation =====
@@ -612,6 +952,74 @@ function startConfetti() {
     update();
 }
 
+function startMessagesConfetti() {
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // More intense confetti for messages page
+    const pieces = Array.from({ length: 300 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        size: 2 + Math.random() * 6,
+        color: `hsl(${Math.random() * 60 + 30}, 80%, 70%)`, // Warmer colors
+        speed: 0.5 + Math.random() * 3,
+        rotation: Math.random() * 360,
+        rotationSpeed: -3 + Math.random() * 6,
+        shape: Math.random() > 0.3 ? 'heart' : 'star',
+        opacity: 0.6 + Math.random() * 0.4
+    }));
+    
+    function updateMessages() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        pieces.forEach(p => {
+            p.y += p.speed;
+            p.rotation += p.rotationSpeed;
+            
+            if (p.y > canvas.height + p.size) {
+                p.y = -p.size;
+                p.x = Math.random() * canvas.width;
+            }
+            
+            ctx.save();
+            ctx.translate(p.x + p.size/2, p.y + p.size/2);
+            ctx.rotate(p.rotation * Math.PI / 180);
+            ctx.globalAlpha = p.opacity;
+            ctx.fillStyle = p.color;
+            
+            if (p.shape === 'heart') {
+                // Draw heart
+                ctx.beginPath();
+                ctx.moveTo(0, p.size/4);
+                ctx.bezierCurveTo(-p.size/2, -p.size/4, -p.size, p.size/8, 0, p.size/2);
+                ctx.bezierCurveTo(p.size, p.size/8, p.size/2, -p.size/4, 0, p.size/4);
+                ctx.fill();
+            } else {
+                // Draw star
+                ctx.beginPath();
+                for (let i = 0; i < 5; i++) {
+                    const angle = (i * Math.PI * 4) / 5;
+                    const x = Math.cos(angle) * p.size/2;
+                    const y = Math.sin(angle) * p.size/2;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            ctx.restore();
+        });
+        
+        if (messagesPage.classList.contains('active')) {
+            requestAnimationFrame(updateMessages);
+        }
+    }
+    updateMessages();
+}
+
 function startCelebration() {
     // Add celebration messages
     const celebrationMessages = [
@@ -639,6 +1047,14 @@ messageInput.addEventListener("keypress", function(event) {
     }
 });
 
+// Handle touch events for mobile
+document.addEventListener('touchstart', function(e) {
+    if (e.target.classList.contains('flame')) {
+        e.preventDefault();
+        blowOutCandle(e.target);
+    }
+});
+
 // ===== Initialize =====
 let timer = setInterval(updateCountdown, 1000);
 updateCountdown();
@@ -652,6 +1068,38 @@ window.addEventListener('resize', () => {
         canvas.height = window.innerHeight;
     }
 });
+
+// Add some sample messages for demonstration
+setTimeout(() => {
+    if (messages.length === 0) {
+        const sampleMessages = [
+            "Happy Birthday! Hope your day is as special as you are! 🎂",
+            "Wishing you joy, happiness and all the best on your birthday! ✨",
+            "Another year older, another year wiser! Celebrate big! 🎉"
+        ];
+        
+        sampleMessages.forEach((msg, index) => {
+            setTimeout(() => {
+                messages.push({
+                    text: msg,
+                    timestamp: new Date()
+                });
+                displayMessages();
+            }, index * 1000 + 3000);
+        });
+    }
+}, 5000);
+
+// Prevent zoom on double tap for mobile
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function (event) {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+    }
+    lastTouchEnd = now;
+}, false);
+
 </script>
 
 </body>
